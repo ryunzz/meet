@@ -5,7 +5,6 @@ import { CalendarPicker } from "./calendar-picker";
 import { TimeSlots } from "./time-slots";
 import { BookingForm } from "./booking-form";
 import { Confirmation } from "./confirmation";
-import { ProfileHeader } from "@/components/landing/profile-header";
 import type { MeetingType, TimeSlot, BookingResponse } from "@/lib/types";
 
 type Step = "calendar" | "form" | "confirmed";
@@ -44,21 +43,20 @@ export function BookingFlow({ meetingType }: BookingFlowProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 py-8">
-      {/* Profile header */}
+      {/* Meeting type header */}
       <div className="mb-8">
-        <ProfileHeader />
-        <div className="mt-6 pt-6 border-t border-border">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: meetingType.color }}
-            />
-            <span className="font-medium">{meetingType.title}</span>
-            <span className="text-muted-foreground">
-              ({meetingType.duration} min)
-            </span>
-          </div>
+        <div className="flex items-center gap-3">
+          <div
+            className="w-4 h-4 rounded-full"
+            style={{ backgroundColor: meetingType.color }}
+          />
+          <h1 className="text-2xl font-semibold">{meetingType.title}</h1>
         </div>
+        {meetingType.description && (
+          <p className="text-muted-foreground mt-2 ml-7">
+            {meetingType.description}
+          </p>
+        )}
       </div>
 
       {/* Step: Calendar and Time Selection */}
