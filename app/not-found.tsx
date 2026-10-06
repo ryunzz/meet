@@ -1,18 +1,14 @@
 import Link from "next/link";
+import { Card } from "@/components/card";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
-      <h1 className="text-4xl font-bold mb-2">404</h1>
-      <p className="text-muted-foreground mb-8">
-        This meeting type doesn&apos;t exist.
-      </p>
-      <Link
-        href="/"
-        className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground h-10 px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
-      >
-        Go back home
+    <Card className="max-w-md px-6 py-12 text-center">
+      <h1 className="text-xl font-bold">This page doesn&apos;t exist</h1>
+      <p className="mt-2 text-[15px] text-muted">The link may be mistyped, or the meeting type was removed.</p>
+      <Link href="/" className="mt-6 inline-block text-[15px] font-medium text-accent hover:underline">
+        See all meeting types
       </Link>
-    </div>
+    </Card>
   );
 }

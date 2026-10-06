@@ -1,71 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getAvailableSlots } from "@/lib/slots";
+import { NextResponse, type NextRequest } from "next/server";
+import { addDays } from "date-fns";
 import { getMeetingType } from "@/lib/config";
-import type { SlotsResponse } from "@/lib/types";
+import { CalendarAuthError } from "@/lib/google-calendar";
+import { findSlots } from "@/lib/slots";
 
+export const dynamic = "force-dynamic";
+
+const MAX_RANGE_DAYS = 45;
+
+// GET /api/slots?type=30&from=<ISO>&to=<ISO>  ->  { slots: string[] }
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const type = searchParams.get("type");
-  const date = searchParams.get("date");
-  const timezone = searchParams.get("timezone") || "America/Los_Angeles";
+  const params = request.nextUrl.searchParams;
+  const meetingType = getMeetingType(params.get("type") ?? "");
+  const from = new Date(params.get("from") ?? "");
+  const to = new Date(params.get("to") ?? "");
 
-  // Validate required parameters
-  if (!type) {
-    return NextResponse.json(
-      { error: "Missing required parameter: type" },
-      { status: 400 }
-    );
-  }
-
-  if (!date) {
-    return NextResponse.json(
-      { error: "Missing required parameter: date" },
-      { status: 400 }
-    );
-  }
-
-  // Validate date format (YYYY-MM-DD)
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return NextResponse.json(
-      { error: "Invalid date format. Use YYYY-MM-DD" },
-      { status: 400 }
-    );
-  }
-
-  // Validate meeting type exists
-  const meetingType = getMeetingType(type);
   if (!meetingType) {
-    return NextResponse.json(
-      { error: `Unknown meeting type: ${type}` },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Unknown meeting type." }, { status: 400 });
+  }
+  if (isNaN(from.getTime()) || isNaN(to.getTime()) || to <= from) {
+    return NextResponse.json({ error: "`from` and `to` must be ISO dates with from < to." }, { status: 400 });
+  }
+  if (to > addDays(from, MAX_RANGE_DAYS)) {
+    return NextResponse.json({ error: `Range can't exceed ${MAX_RANGE_DAYS} days.` }, { status: 400 });
   }
 
   try {
-    const slots = await getAvailableSlots(date, type);
-
-    const response: SlotsResponse = {
-      date,
-      timezone,
-      meetingType,
-      slots,
-    };
-
-    return NextResponse.json(response);
+    const slots = await findSlots(meetingType, from, to);
+    return NextResponse.json({ slots: slots.map((s) => s.toISOString()) });
   } catch (error) {
-    console.error("Error fetching slots:", error);
-
-    // Check for auth errors
-    if (error instanceof Error && error.message.includes("authentication")) {
-      return NextResponse.json(
-        { error: "Calendar service temporarily unavailable. Please try again later." },
-        { status: 503 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: "Failed to fetch available slots. Please try again." },
-      { status: 500 }
-    );
+    console.error("[slots]", error);
+    const status = error instanceof CalendarAuthError ? 503 : 500;
+    return NextResponse.json({ error: "Couldn't load availability. Try again in a minute." }, { status });
   }
 }
