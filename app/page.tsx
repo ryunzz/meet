@@ -10,7 +10,23 @@ export default function HomePage() {
       <header className="flex flex-col items-center border-b border-line px-6 py-10 text-center">
         <Avatar size={72} />
         <h1 className="mt-4 text-xl font-bold">{site.owner.name}</h1>
-        <p className="mt-2 max-w-md text-[15px] leading-relaxed text-muted">{site.owner.intro}</p>
+        <p className="mt-2 max-w-md text-[15px] leading-relaxed text-muted">
+          {site.owner.intro.map((part, i) =>
+            typeof part === "string" ? (
+              part
+            ) : (
+              <a
+                key={i}
+                href={part.href}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-accent underline-offset-2 hover:underline"
+              >
+                {part.text}
+              </a>
+            )
+          )}
+        </p>
       </header>
 
       <ul className="divide-y divide-line">

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
-import { site } from "@/lib/config";
+import { introText, site } from "@/lib/config";
 import "./globals.css";
 
 const figtree = Figtree({ variable: "--font-figtree", subsets: ["latin"] });
@@ -10,8 +10,8 @@ const title = `Meet with ${site.owner.name}`;
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: title, template: `%s · ${title}` },
-  description: site.owner.intro,
-  openGraph: { title, description: site.owner.intro, url: site.url, type: "website" },
+  description: introText,
+  openGraph: { title, description: introText, url: site.url, type: "website" },
 };
 
 export const viewport: Viewport = {

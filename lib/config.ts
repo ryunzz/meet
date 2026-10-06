@@ -22,7 +22,12 @@ export const site = {
     name: "Ryun",
     // Image in /public, or null to show initials.
     avatar: "/avatar.png" as string | null,
-    intro: "Prev SWE @ Apple, Founder @ Lightyear (incubated by HF0)",
+    // Plain strings and links; rendered under the name and flattened for link previews.
+    intro: [
+      "Prev SWE @ Apple, Founder @ ",
+      { text: "Lightyear", href: "https://x.com/eostudi0/status/2085019791077900397" },
+      " (incubated by HF0)",
+    ] as (string | { text: string; href: string })[],
   },
   timezone: "America/Los_Angeles",
   // Guests can book through the end of this many days from today.
@@ -72,6 +77,8 @@ export const meetingTypes: MeetingType[] = [
     color: "#8247f5",
   },
 ];
+
+export const introText = site.owner.intro.map((part) => (typeof part === "string" ? part : part.text)).join("");
 
 export function getMeetingType(slug: string) {
   return meetingTypes.find((mt) => mt.slug === slug);
