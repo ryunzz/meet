@@ -22,8 +22,7 @@ export const site = {
     name: "Ryun",
     // Image in /public, or null to show initials.
     avatar: "/avatar.png" as string | null,
-    intro:
-      "Pick a meeting length, then a time that works for you. You'll get a Google Meet invite by email.",
+    intro: "Prev SWE @ Apple, Founder @ Lightyear (incubated by HF0)",
   },
   timezone: "America/Los_Angeles",
   // Guests can book through the end of this many days from today.
