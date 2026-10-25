@@ -3,6 +3,9 @@ export type Weekday = "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
 // "HH:mm" in the owner's timezone. A day can have several windows.
 export type WeeklyHours = Record<Weekday, { start: string; end: string }[]>;
 
+// One-off changes keyed by "yyyy-MM-dd" (owner's timezone); replace that day's weekly hours.
+export type DateOverrides = Record<string, WeeklyHours[Weekday]>;
+
 export interface MeetingType {
   slug: string;
   title: string;
@@ -43,6 +46,9 @@ export const site = {
     fri: workday,
     sat: workday,
   } satisfies WeeklyHours,
+  overrides: {
+    "2026-10-25": workday,
+  } satisfies DateOverrides,
 };
 
 export const meetingTypes: MeetingType[] = [

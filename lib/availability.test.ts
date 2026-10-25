@@ -82,6 +82,17 @@ describe("computeSlots", () => {
     expect(iso(computeSlots({ ...base, from, to }))).toEqual(["2026-10-06T16:30:00.000Z"]);
   });
 
+  test("date overrides replace that day's weekly hours", () => {
+    const overrides = {
+      "2026-10-05": [{ start: "14:00", end: "15:00" }], // open a closed Monday
+      "2026-10-06": [], // close Tuesday
+    };
+    expect(iso(computeSlots({ ...base, now: new Date("2026-10-05T07:00:00Z"), overrides }))).toEqual([
+      "2026-10-05T21:00:00.000Z", // 14:00 PDT
+      "2026-10-05T21:30:00.000Z",
+    ]);
+  });
+
   test("handles DST: winter slots shift by an hour in UTC", () => {
     const winterNow = new Date("2026-11-09T16:00:00Z"); // Monday, PST
     const slots = computeSlots({

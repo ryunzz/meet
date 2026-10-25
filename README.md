@@ -19,6 +19,7 @@ Everything you'd want to change lives in [`lib/config.ts`](lib/config.ts):
 
 - `site.owner`: name, intro text, and an optional avatar (put the image in `/public`).
 - `site.timezone` and `site.hours`: your weekly working hours. A day can have several windows, or `[]` for unavailable.
+- `site.overrides`: one-off hours for specific dates (`"2026-10-25": [...]` to open a day, `[]` to close one).
 - `site.maxBookingDays`: how far ahead guests can book.
 - `meetingTypes`: each becomes a page at `/<slug>`. Sets the duration, start-time increment, buffer around existing events, and minimum notice.
 

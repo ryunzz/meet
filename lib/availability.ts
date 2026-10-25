@@ -1,6 +1,6 @@
 import { addDays, addMinutes } from "date-fns";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-import type { MeetingType, Weekday, WeeklyHours } from "./config";
+import type { DateOverrides, MeetingType, Weekday, WeeklyHours } from "./config";
 
 export interface Interval {
   start: Date;
@@ -21,8 +21,9 @@ function weekdayOf(date: string): Weekday {
 }
 
 /**
- * Bookable start times in [from, to), honoring weekly hours (in `timezone`),
- * minimum notice, the booking horizon, and busy periods padded by the buffer.
+ * Bookable start times in [from, to), honoring weekly hours and date overrides
+ * (in `timezone`), minimum notice, the booking horizon, and busy periods padded
+ * by the buffer.
  */
 export function computeSlots(opts: {
   meetingType: MeetingType;
@@ -32,9 +33,10 @@ export function computeSlots(opts: {
   now: Date;
   timezone: string;
   hours: WeeklyHours;
+  overrides?: DateOverrides;
   maxBookingDays: number;
 }): Date[] {
-  const { meetingType: mt, busy, timezone, hours } = opts;
+  const { meetingType: mt, busy, timezone, hours, overrides = {} } = opts;
 
   const noticeCutoff = addMinutes(opts.now, mt.minNoticeMinutes);
   // Bookable through the end of the last allowed day, in the owner's timezone.
@@ -58,7 +60,7 @@ export function computeSlots(opts: {
     day <= lastDay;
     day = nextDay(day)
   ) {
-    for (const window of hours[weekdayOf(day)]) {
+    for (const window of overrides[day] ?? hours[weekdayOf(day)]) {
       const windowEnd = fromZonedTime(`${day}T${window.end}:00`, timezone);
       let start = fromZonedTime(`${day}T${window.start}:00`, timezone);
 

@@ -19,6 +19,7 @@ export async function findSlots(meetingType: MeetingType, from: Date, to: Date):
     now,
     timezone: site.timezone,
     hours: site.hours,
+    overrides: site.overrides,
     maxBookingDays: site.maxBookingDays,
   });
 }
