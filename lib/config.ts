@@ -29,7 +29,7 @@ export const site = {
     intro: [
       "Prev SWE @ Apple, Founder @ ",
       { text: "Lightyear", href: "https://x.com/eostudi0/status/2085019791077900397" },
-      " (S26, incubated by HF0)",
+      " (S26, HF0 incubated residency)",
     ] as (string | { text: string; href: string })[],
   },
   timezone: "America/Los_Angeles",
