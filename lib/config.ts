@@ -28,7 +28,7 @@ export const site = {
     // Plain strings and links; rendered under the name and flattened for link previews.
     intro: [
       "Prev SWE @ Apple, Founder @ ",
-      { text: "Lightyear", href: "https://x.com/eostudi0/status/2085019791077900397" },
+      { text: "Lightyear", href: "https://joinlightyear.com/" },
       " (HF0 incubated residency)",
     ] as (string | { text: string; href: string })[],
   },
