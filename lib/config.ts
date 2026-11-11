@@ -27,7 +27,9 @@ export const site = {
     avatar: "/avatar.png" as string | null,
     // Plain strings and links; rendered under the name and flattened for link previews.
     intro: [
-      "Prev SWE @ Apple, Founder @ ",
+      "Prev SWE @ ",
+      { text: "Apple", href: "https://www.apple.com/" },
+      ", Founder @ ",
       { text: "Lightyear", href: "https://joinlightyear.com/" },
       " (HF0 incubated residency)",
     ] as (string | { text: string; href: string })[],

@@ -7,10 +7,10 @@ import { meetingTypes, site } from "@/lib/config";
 export default function HomePage() {
   return (
     <Card className="max-w-[640px]">
-      <header className="flex flex-col items-center border-b border-line px-6 py-10 text-center">
+      <header className="flex flex-col items-center border-b border-line px-4 py-10 text-center sm:px-6">
         <Avatar size={72} />
         <h1 className="mt-4 text-xl font-bold">{site.owner.name}</h1>
-        <p className="mt-2 max-w-md text-[15px] leading-relaxed text-muted">
+        <p className="mt-2 whitespace-nowrap text-[min(15px,calc((100vw_-_32px)/31.5))] leading-relaxed text-muted">
           {site.owner.intro.map((part, i) =>
             typeof part === "string" ? (
               part
