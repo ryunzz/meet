@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Avatar } from "@/components/avatar";
 import { Card } from "@/components/card";
+import { OwnerIntro } from "@/components/owner-intro";
 import { meetingTypes, site } from "@/lib/config";
 
 export default function HomePage() {
@@ -11,21 +12,7 @@ export default function HomePage() {
         <Avatar size={72} />
         <h1 className="mt-4 text-xl font-bold">{site.owner.name}</h1>
         <p className="mt-2 whitespace-nowrap text-[min(15px,calc((100vw_-_32px)/31.5))] leading-relaxed text-muted">
-          {site.owner.intro.map((part, i) =>
-            typeof part === "string" ? (
-              part
-            ) : (
-              <a
-                key={i}
-                href={part.href}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-accent underline-offset-2 hover:underline"
-              >
-                {part.text}
-              </a>
-            )
-          )}
+          <OwnerIntro />
         </p>
       </header>
 

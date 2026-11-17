@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock, Globe, Video } from "lucide-react";
 import { Avatar } from "@/components/avatar";
+import { OwnerIntro } from "@/components/owner-intro";
 import { site, type MeetingType } from "@/lib/config";
 import { formatRange } from "@/lib/time";
 
@@ -32,7 +33,10 @@ export function EventSummary(props: {
         <Avatar size={36} />
         <p className="font-medium text-muted">{site.owner.name}</p>
       </div>
-      <h1 className="mt-3 text-[26px] font-bold leading-tight">{mt.title}</h1>
+      <p className="mt-3 text-sm leading-relaxed text-muted">
+        <OwnerIntro />
+      </p>
+      <h1 className="mt-5 text-[26px] font-bold leading-tight">{mt.title}</h1>
 
       <ul className="mt-6 space-y-4 font-medium text-muted">
         <Detail icon={Clock}>{mt.duration} min</Detail>
